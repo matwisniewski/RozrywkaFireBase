@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "21551542292",
+    "firebase_url": "https://rozrywkafirebase-4a2c7.firebaseio.com",
+    "project_id": "rozrywkafirebase-4a2c7",
+    "storage_bucket": "rozrywkafirebase-4a2c7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:21551542292:android:8d630d475887f1b9e23701",
+        "android_client_info": {
+          "package_name": "com.example.rozrywkafirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "21551542292-sa1op6d8eg2762e15qk16uoql7qbtmo6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.rozrywkafirebase",
+            "certificate_hash": "0dcab199fedf57cb2761726814a0f182a4a5bba4"
+          }
+        },
+        {
+          "client_id": "21551542292-upakfpmle25a5lk2g0he4q0ch6us97cd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUeM57OjSfi8Xfg-XqxlFSkkNXurh180w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "21551542292-upakfpmle25a5lk2g0he4q0ch6us97cd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
