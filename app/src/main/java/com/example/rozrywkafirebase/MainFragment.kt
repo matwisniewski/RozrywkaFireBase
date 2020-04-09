@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_main.*
 import com.firebase.ui.auth.AuthUI
@@ -21,6 +23,7 @@ class MainFragment : Fragment() {
     }
 
     override fun onCreateView(
+
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,6 +34,7 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         buttonLogin.setOnClickListener{ launchSignInFlow() }
+        buttonRegister.setOnClickListener{ launchSignInFlow() }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -38,12 +42,15 @@ class MainFragment : Fragment() {
         if (requestCode == SIGN_IN_RESULT_CODE) {
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
-                // User successfully signed in.
+                textView.isVisible = false
+                buttonLogin.isVisible = false
+                buttonRegister.isVisible = false
+                buttonBooks.isVisible = true
+                buttonFilms.isVisible = true
+                buttonGames.isVisible = true
+                buttonLogout.isVisible = true
                 Log.i(TAG, "Successfully signed in user ${FirebaseAuth.getInstance().currentUser?.displayName}!")
             } else {
-                // Sign in failed. If response is null, the user canceled the
-                // sign-in flow using the back button. Otherwise, check
-                // the error code and handle the error.
                 Log.i(TAG, "Sign in unsuccessful ${response?.error?.errorCode}")
             }
         }
@@ -67,6 +74,7 @@ class MainFragment : Fragment() {
             AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
+                .setLogo(R.mipmap.ic_launcher)
                 .build(),
             SIGN_IN_RESULT_CODE
         )
