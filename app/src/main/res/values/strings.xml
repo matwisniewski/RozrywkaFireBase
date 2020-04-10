@@ -1,8 +1,4 @@
 <resources>
     <string name="app_name">RozrywkaFireBase</string>
-    <string name="welcome_message_authed">Witaj %1$s! Czy wiesz, że %2$s.</string>
-
-    <string name="fact_type_android">Android</string>
-
-    <string name="preference_fact_type_key">fact_type_pref</string>
+    <string name="welcome_message_authed">Witaj</string>
 </resources>
