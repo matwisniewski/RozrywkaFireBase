@@ -1,5 +1,6 @@
 package com.example.rozrywkafirebase
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -7,13 +8,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_main.*
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
+
 
 
 class MainFragment : Fragment() {
@@ -21,6 +24,8 @@ class MainFragment : Fragment() {
         const val TAG = "MainFragment"
         const val SIGN_IN_RESULT_CODE = 1001
     }
+
+    private val viewModel by viewModels<LoginViewModel>()
 
     override fun onCreateView(
 
@@ -33,8 +38,49 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeAuthenticationState()
+
         buttonLogin.setOnClickListener{ launchSignInFlow() }
         buttonRegister.setOnClickListener{ launchSignInFlow() }
+    }
+
+    private fun logoutVisibility(){
+        textView.isVisible = true
+        buttonLogin.isVisible = true
+        buttonRegister.isVisible = true
+        textViewLogin.isVisible = false
+        buttonBooks.isVisible = false
+        buttonFilms.isVisible = false
+        buttonGames.isVisible = false
+        buttonLogout.isVisible = false
+    }
+
+    private fun loginVisibility(){
+        textView.isVisible = false
+        buttonLogin.isVisible = false
+        buttonRegister.isVisible = false
+        textViewLogin.isVisible = true
+        buttonBooks.isVisible = true
+        buttonFilms.isVisible = true
+        buttonGames.isVisible = true
+        buttonLogout.isVisible = true
+    }
+
+    private fun observeAuthenticationState() {
+        viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
+            when (authenticationState) {
+                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+                    textViewLogin.text = "Witaj ${FirebaseAuth.getInstance().currentUser?.displayName}!"
+                    loginVisibility()
+                    buttonLogout.setOnClickListener {
+                        AuthUI.getInstance().signOut(requireContext())
+                    }
+                }
+                else -> {
+                    logoutVisibility()
+                }
+            }
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -42,15 +88,11 @@ class MainFragment : Fragment() {
         if (requestCode == SIGN_IN_RESULT_CODE) {
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
-                textView.isVisible = false
-                buttonLogin.isVisible = false
-                buttonRegister.isVisible = false
-                buttonBooks.isVisible = true
-                buttonFilms.isVisible = true
-                buttonGames.isVisible = true
-                buttonLogout.isVisible = true
+                loginVisibility()
+                textViewLogin.text = "Witaj ${FirebaseAuth.getInstance().currentUser?.displayName}!"
                 Log.i(TAG, "Successfully signed in user ${FirebaseAuth.getInstance().currentUser?.displayName}!")
             } else {
+                logoutVisibility()
                 Log.i(TAG, "Sign in unsuccessful ${response?.error?.errorCode}")
             }
         }
